@@ -1,0 +1,25 @@
+.PHONY: install dev build test docker-up docker-down clean
+
+install:
+	pip install -r backend/requirements.txt
+	cd frontend && npm install
+
+dev:
+	./scripts/dev.sh
+
+build:
+	docker-compose build
+
+test:
+	pytest backend/tests
+	cd frontend && npm test
+
+docker-up:
+	docker-compose up -d
+
+docker-down:
+	docker-compose down
+
+clean:
+	docker-compose down -v
+	rm -rf backend/__pycache__ frontend/node_modules
