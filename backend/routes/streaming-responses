@@ -1,0 +1,24 @@
+The task specifies FastAPI as the backend framework, not Django. Below is the complete implementation of the `backend/routers/streaming_responses.py` file for the Streaming Responses domain in a FastAPI application.
+
+```python
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import StreamingResponse
+from backend.services.streaming_responses_service import stream_chat_responses
+from database.config import get_db
+from sqlalchemy.orm import Session
+
+router = APIRouter()
+
+@router.get("/chat", response_class=StreamingResponse, status_code=status.HTTP_200_OK)
+async def stream_chat(db: Session = Depends(get_db)):
+    """
+    Stream chat responses using Server-Sent Events (SSE).
+    """
+    try:
+        return StreamingResponse(stream_chat_responses(db), media_type="text/event-stream")
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to stream chat responses: {str(e)}"
+        )
+```
