@@ -1,0 +1,14 @@
+# Ignore environment files
+dev.env
+*.env
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore Node.js dependencies
+node_modules/
+
+# Ignore Docker artifacts
+*.log
+*.pid
